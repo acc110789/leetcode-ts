@@ -1,0 +1,39 @@
+class TreeNode {
+    val: number
+    left: TreeNode | null
+    right: TreeNode | null
+    constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+        this.val = (val===undefined ? 0 : val)
+        this.left = (left===undefined ? null : left)
+        this.right = (right===undefined ? null : right)
+    }
+}
+
+
+function zigzagLevelOrder(root: TreeNode | null): number[][] {
+    let result: number[][] = []
+    if (!root) return result
+
+    let order = true
+    let nodes: TreeNode[] = [root]
+    while (nodes.length > 0) {
+        let newNodes: TreeNode[] = []
+        let nodeValues: number[] = []
+        nodes.reverse().forEach((value, index) => {
+            nodeValues.push(value.val)
+            if (order) {
+                if (value.left) newNodes.push(value.left)
+                if (value.right) newNodes.push(value.right)
+            } else {
+                if (value.right) newNodes.push(value.right)
+                if (value.left) newNodes.push(value.left)
+            }
+
+        })
+
+        result.push(nodeValues)
+        nodes = newNodes
+        order = !order
+    }
+    return result
+}
